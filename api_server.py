@@ -4,7 +4,6 @@ import gevent
 from flask import Flask, jsonify, request
 import json
 import time
-from threading import Thread
 
 app = Flask(__name__)
 # 日本語対応
@@ -123,7 +122,6 @@ def api_ws(action, keys):
                             del old_result_list[keys][idno]
                             if not old_result_list[keys]:
                                 del old_result_list[keys]
-#                            ws.close()
                             return 'ERROR' # XXX:何か返さないとエラーになる
 
                     print('WebSocket access: {}, {}'.format(action, keys))
