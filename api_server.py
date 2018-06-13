@@ -53,9 +53,22 @@ def api_rest(keys):
                     'status':'ERROR',
                     'message':'<' + keys + '>は予約語です'
                     }
+        elif not 'Content-Type' in request.headers:
+            result = {
+                    'status':'OK',
+                    'Content-type':'undefined'
+                    }
+            result_list[keys] = request.form
+        elif request.headers['Content-Type'] == 'application/json':
+            result = {
+                    'status':'OK',
+                    'Content-Type':request.headers['Content-Type']
+                    }
+            result_list[keys] = json.loads(request.data)
         else:
             result = {
                     'status':'OK',
+                    'Content-Type':request.headers['Content-Type']
                     }
             result_list[keys] = request.form
     # POST}}}
@@ -164,7 +177,7 @@ def main():
 # 外部から接続可能
 #    server = pywsgi.WSGIServer(('0.0.0.0', 5000), app, handler_class=WebSocketHandler)
 # localeのみ
-    server = pywsgi.WSGIServer(('127.0.0.1', 5000), app, handler_class=WebSocketHandler)
+    server = pywsgi.WSGIServer(('127.0.0.1', 8888), app, handler_class=WebSocketHandler)
     server.serve_forever()
 
 if __name__ == '__main__':
